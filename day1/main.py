@@ -33,11 +33,15 @@ For example:
 To what floor do the instructions take Santa?
 """
 
+# === My Solution ===
+
 from typing import Optional
 
 
 def part1(input: str) -> int:
     """
+    For part 1, I take a very simple approach.
+
     Take a string composed of `(` and `)`, and return the count of `(`'s minus
     the count of `)`'s.
     """
@@ -45,7 +49,7 @@ def part1(input: str) -> int:
 
 
 def test_part1():
-    """Check all part 1 examples"""
+    """Check all part 1 examples."""
     assert part1("(())") == 0
     assert part1("()()") == 0
     assert part1("(((") == 3
@@ -59,8 +63,13 @@ def test_part1():
 
 def part2(input: str) -> Optional[int]:
     """
+    For part 2, I have to actually iterate through the string and keep track of
+    how many parens of each type have been encountered. I think a small match
+    statement fits very nicely here.
+
     Take a string composed of `(` and `)`, and return the index of the first
-    character at which one more `)` has been encountered than `(`'s.
+    character at which one more `)` has been encountered than `(`'s. Implicitly
+    return `None` if this never occurs.
     """
     floor = 0
     for index, char in enumerate(input, start=1):
@@ -75,7 +84,7 @@ def part2(input: str) -> Optional[int]:
 
 
 def test_part2():
-    """Check all part 2 examples"""
+    """Check all part 2 examples."""
     assert part2(")") == 1
     assert part2("()())") == 5
 
