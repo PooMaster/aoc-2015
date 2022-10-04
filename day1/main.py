@@ -109,6 +109,8 @@ def part2(input: str) -> Optional[int]:
         
         if floor == -1:
             return index
+    
+    return None
 
 
 if __name__ == "__main__":

@@ -44,7 +44,8 @@ def parse_dimensions(line: str) -> tuple[int, int, int]:
     parts = line.split('x')
     assert len(parts) == 3, f"Got dimension line that isn't three numbers: {line}"
 
-    return tuple(map(int, parts))
+    l, w, h = map(int, parts)
+    return (l, w, h)
 
 
 def paper_area(l: int, w: int, h: int) -> int:
@@ -115,7 +116,7 @@ def ribbon_length(l: int, w: int, h: int) -> int:
     return wrapped_length + bow_length
 
 
-def part2(input: str) -> ...:
+def part2(input: str) -> int:
     """
     Split the input into separate present dimension lines, calculate each of
     their required ribbon lengths, and then return the total.
