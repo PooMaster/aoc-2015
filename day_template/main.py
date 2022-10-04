@@ -4,6 +4,15 @@
 <paste in problem description here>
 """
 
+def test_part1():
+    """For example:"""
+    # > `""` results in  `...`.
+    assert part1("") == ...
+
+"""
+<end of problem description>
+"""
+
 # === Part 1 Solution: ===
 
 
@@ -13,15 +22,19 @@ def part1(input: str) -> ...:
     return ...
 
 
-def test_part1():
-    """Check all part 1 examples."""
-    assert part1("") == ...
-
-
 """
 ### Part 2:
 
 <paste in problem description here>
+"""
+
+def test_part2():
+    """For example:"""
+    # > `""` results in  `...`.
+    assert part2("") == ...
+
+"""
+<end of problem description>
 """
 
 # === Part 2 Solution: ===
@@ -31,11 +44,6 @@ def part2(input: str) -> ...:
     """
     """
     return ...
-
-
-def test_part2():
-    """Check all part 2 examples."""
-    assert part2("") == ...
 
 
 if __name__ == "__main__":

@@ -23,19 +23,30 @@ parenthesis, `)`, means he should go down one floor.
 
 The apartment building is very tall, and the basement is very deep; he will
 never find the top or bottom floors.
+"""
 
-For example:
+def test_part1():
+    """For example:"""
+    # > `(())` and `()()` both result in floor `0`.
+    assert part1("(())") == 0
+    assert part1("()()") == 0
 
-- `(())` and `()()` both result in floor `0`.
+    # > `(((` and `(()(()(` both result in floor `3`.
+    assert part1("(((") == 3
+    assert part1("(()(()(") == 3
 
-- `(((` and `(()(()(` both result in floor `3`.
+    # > `))(((((` also results in floor `3`.
+    assert part1("))(((((") == 3
 
-- `))(((((` also results in floor `3`.
+    # > `())` and `))(` both result in floor `-1` (the first basement level).
+    assert part1("())") == -1
+    assert part1("))(") == -1
 
-- `())` and `))(` both result in floor `-1` (the first basement level).
+    # > `)))` and `)())())` both result in floor `-3`.
+    assert part1(")))") == -3
+    assert part1(")())())") == -3
 
-- `)))` and `)())())` both result in floor `-3`.
-
+"""
 To what floor do the instructions take Santa?
 """
 
@@ -54,32 +65,23 @@ def part1(input: str) -> int:
     return input.count('(') - input.count(')')
 
 
-def test_part1():
-    """Check all part 1 examples."""
-    assert part1("(())") == 0
-    assert part1("()()") == 0
-    assert part1("(((") == 3
-    assert part1("(()(()(") == 3
-    assert part1("))(((((") == 3
-    assert part1("())") == -1
-    assert part1("))(") == -1
-    assert part1(")))") == -3
-    assert part1(")())())") == -3
-
-
 """
 ### Part 2:
 
 Now, given the same instructions, find the position of the first character that
 causes him to enter the basement (floor `-1`). The first character in the
 instructions has position `1`, the second character has position `2`, and so on.
+"""
 
-For example:
+def test_part2():
+    """For example:"""
+    # > `)` causes him to enter the basement at character position `1`.
+    assert part2(")") == 1
 
--   `)` causes him to enter the basement at character position `1`.
+    # > `()())` causes him to enter the basement at character position `5`.
+    assert part2("()())") == 5
 
--   `()())` causes him to enter the basement at character position `5`.
-
+"""
 What is the position of the character that causes Santa to first enter the
 basement?
 """
@@ -107,12 +109,6 @@ def part2(input: str) -> Optional[int]:
         
         if floor == -1:
             return index
-
-
-def test_part2():
-    """Check all part 2 examples."""
-    assert part2(")") == 1
-    assert part2("()())") == 5
 
 
 if __name__ == "__main__":
