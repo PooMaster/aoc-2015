@@ -1,8 +1,10 @@
 """
+### Part 1:
+
 <paste in problem description here>
 """
 
-# === My Solution ===
+# === Part 1 Solution: ===
 
 
 def part1(input: str) -> ...:
@@ -14,6 +16,15 @@ def part1(input: str) -> ...:
 def test_part1():
     """Check all part 1 examples."""
     assert part1("") == ...
+
+
+"""
+### Part 2:
+
+<paste in problem description here>
+"""
+
+# === Part 2 Solution: ===
 
 
 def part2(input: str) -> ...:
@@ -28,10 +39,10 @@ def test_part2():
 
 
 if __name__ == "__main__":
-    problem_input = open('input.txt').read()
+    puzzle_input = open('input.txt').read()
 
     # Print out part 1 solution
-    print(part1(problem_input))
+    print("Part 1:", part1(puzzle_input))
 
     # Print out part 2 solution
-    print(part2(problem_input))
+    print("Part 2:", part2(puzzle_input))
