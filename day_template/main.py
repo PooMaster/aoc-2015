@@ -4,10 +4,12 @@
 <paste in problem description here>
 """
 
+
 def test_part1():
     """For example:"""
     # > `""` results in  `...`.
     assert part1("") == ...
+
 
 """
 <end of problem description>
@@ -17,8 +19,7 @@ def test_part1():
 
 
 def part1(input: str) -> ...:
-    """
-    """
+    """ """
     return ...
 
 
@@ -28,10 +29,12 @@ def part1(input: str) -> ...:
 <paste in problem description here>
 """
 
+
 def test_part2():
     """For example:"""
     # > `""` results in  `...`.
     assert part2("") == ...
+
 
 """
 <end of problem description>
@@ -41,13 +44,12 @@ def test_part2():
 
 
 def part2(input: str) -> ...:
-    """
-    """
+    """ """
     return ...
 
 
 if __name__ == "__main__":
-    puzzle_input = open('input.txt').read()
+    puzzle_input = open("input.txt").read()
 
     # Print out part 1 solution
     print("Part 1:", part1(puzzle_input))
