@@ -1,17 +1,18 @@
-# flake8: noqa
 import os
 import tempfile
+from typing import Any
 
 import nox
+from nox.sessions import Session
 
 
 nox.options.sessions = "lint", "mypy"
 
-locations = "make_pycco_pages.py", "src"
+locations = "noxfile.py", "make_pycco_pages.py", "src"
 
 
 @nox.session(python=["3.10"])
-def lint(session):
+def lint(session: Session) -> None:
     args = session.posargs or locations
     install_with_constraints(
         session,
@@ -26,7 +27,7 @@ def lint(session):
 
 
 @nox.session(python=["3.10"])
-def mypy(session):
+def mypy(session: Session) -> None:
     args = session.posargs or locations
     install_with_constraints(
         session,
@@ -35,7 +36,9 @@ def mypy(session):
     session.run("mypy", *args)
 
 
-def install_with_constraints(session, *args, **kwargs):
+def install_with_constraints(
+    session: Session, *args: str, **kwargs: Any  # noqa: ANN401
+) -> None:
     with tempfile.NamedTemporaryFile(delete=False) as requirements:
         session.run(
             "poetry",
