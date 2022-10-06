@@ -17,7 +17,7 @@ little extra paper for each present: the area of the smallest side.
 """
 
 
-def test_part1():
+def test_part1() -> None:
     """For example:"""
     # > A present with dimensions `2x3x4` requires `2*6 + 2*12 + 2*8 = 52`
     # > square feet of wrapping paper plus 6 square feet of slack, for a total
@@ -87,7 +87,7 @@ though; they'll never tell.
 """
 
 
-def test_part2():
+def test_part2() -> None:
     """For example:"""
     # > A present with dimensions `2x3x4` requires `2+2+3+3 = 10` feet of ribbon
     # > to wrap the present plus `2*3*4 = 24` feet of ribbon for the bow, for a

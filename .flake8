@@ -1,5 +1,5 @@
 [flake8]
-select = B,B9,BLK,C,E,F,I,W
+select = ANN,B,B9,BLK,C,E,F,I,W
 ignore = E501,W503
 max-complexity = 10
 
