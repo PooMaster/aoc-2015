@@ -17,18 +17,20 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      <p>flake8: noqa</p>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
 <span class="kn">import</span> <span class="nn">tempfile</span>
+<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span>
 
 <span class="kn">import</span> <span class="nn">nox</span>
+<span class="kn">from</span> <span class="nn">nox.sessions</span> <span class="kn">import</span> <span class="n">Session</span>
 
 
 <span class="n">nox</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">sessions</span> <span class="o">=</span> <span class="s2">&quot;lint&quot;</span><span class="p">,</span> <span class="s2">&quot;mypy&quot;</span>
 
-<span class="n">locations</span> <span class="o">=</span> <span class="s2">&quot;make_pycco_pages.py&quot;</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span></pre></div>
+<span class="n">locations</span> <span class="o">=</span> <span class="s2">&quot;noxfile.py&quot;</span><span class="p">,</span> <span class="s2">&quot;make_pycco_pages.py&quot;</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -41,7 +43,7 @@
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="nd">@nox</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3.10&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">posargs</span> <span class="ow">or</span> <span class="n">locations</span>
     <span class="n">install_with_constraints</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
@@ -56,7 +58,7 @@
 
 
 <span class="nd">@nox</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3.10&quot;</span><span class="p">])</span>
-<span class="k">def</span> <span class="nf">mypy</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">mypy</span><span class="p">(</span><span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="n">args</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">posargs</span> <span class="ow">or</span> <span class="n">locations</span>
     <span class="n">install_with_constraints</span><span class="p">(</span>
         <span class="n">session</span><span class="p">,</span>
@@ -65,7 +67,9 @@
     <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;mypy&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
 
 
-<span class="k">def</span> <span class="nf">install_with_constraints</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<span class="k">def</span> <span class="nf">install_with_constraints</span><span class="p">(</span>
+    <span class="n">session</span><span class="p">:</span> <span class="n">Session</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span>  <span class="c1"># noqa: ANN401</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
     <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">requirements</span><span class="p">:</span>
         <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
             <span class="s2">&quot;poetry&quot;</span><span class="p">,</span>
