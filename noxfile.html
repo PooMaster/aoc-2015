@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>noxfile.py</title>
+  <link rel="stylesheet" href="pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>noxfile.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <p>flake8: noqa</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">tempfile</span>
+
+<span class="kn">import</span> <span class="nn">nox</span>
+
+
+<span class="n">nox</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">sessions</span> <span class="o">=</span> <span class="s2">&quot;lint&quot;</span><span class="p">,</span> <span class="s2">&quot;mypy&quot;</span>
+
+<span class="n">locations</span> <span class="o">=</span> <span class="s2">&quot;make_pycco_pages.py&quot;</span><span class="p">,</span> <span class="s2">&quot;src&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="nd">@nox</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3.10&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">lint</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">posargs</span> <span class="ow">or</span> <span class="n">locations</span>
+    <span class="n">install_with_constraints</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="s2">&quot;flake8&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flake8-annotations&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flake8-bandit&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flake8-black&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flake8-bugbear&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;flake8-import-order&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;flake8&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="nd">@nox</span><span class="o">.</span><span class="n">session</span><span class="p">(</span><span class="n">python</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;3.10&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">mypy</span><span class="p">(</span><span class="n">session</span><span class="p">):</span>
+    <span class="n">args</span> <span class="o">=</span> <span class="n">session</span><span class="o">.</span><span class="n">posargs</span> <span class="ow">or</span> <span class="n">locations</span>
+    <span class="n">install_with_constraints</span><span class="p">(</span>
+        <span class="n">session</span><span class="p">,</span>
+        <span class="s2">&quot;mypy&quot;</span><span class="p">,</span>
+    <span class="p">)</span>
+    <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s2">&quot;mypy&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">install_with_constraints</span><span class="p">(</span><span class="n">session</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">with</span> <span class="n">tempfile</span><span class="o">.</span><span class="n">NamedTemporaryFile</span><span class="p">(</span><span class="n">delete</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="k">as</span> <span class="n">requirements</span><span class="p">:</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
+            <span class="s2">&quot;poetry&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;export&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--with&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;dev&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--without-hashes&quot;</span><span class="p">,</span>
+            <span class="s2">&quot;--format=requirements.txt&quot;</span><span class="p">,</span>
+            <span class="sa">f</span><span class="s2">&quot;--output=</span><span class="si">{</span><span class="n">requirements</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span>
+            <span class="n">external</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">session</span><span class="o">.</span><span class="n">install</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;--constraint=</span><span class="si">{</span><span class="n">requirements</span><span class="o">.</span><span class="n">name</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="n">os</span><span class="o">.</span><span class="n">unlink</span><span class="p">(</span><span class="n">requirements</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
