@@ -6,7 +6,7 @@ from typing import Generator, Sequence
 import pycco
 
 
-def main(exclude: Sequence[str]) -> None:
+def main(include: Sequence[str], exclude: Sequence[str]) -> None:
     """
     Generate Pycco HTML file tree out of a specific subset of sources. The
     subset is controlled by expliciti include and exclude patterns.
@@ -16,11 +16,14 @@ def main(exclude: Sequence[str]) -> None:
         rmtree(build_dest)
     build_dest.mkdir()
 
+    if not include:
+        include = ["*.py"]
+
     all_exclude = Path(".gitignore").read_text().splitlines()
     all_exclude.extend([".git", ".gitignore", ".github"])
     all_exclude.extend(exclude)
 
-    source_files = find_files(Path("."), include=["*.py"], exclude=all_exclude)
+    source_files = find_files(Path("."), include=include, exclude=all_exclude)
 
     pycco.process(
         sources=[str(f) for f in source_files], outdir=str(build_dest), index=True
@@ -51,9 +54,13 @@ def find_files(
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument(
+        "--include", help="Comma separated list of file patterns to include"
+    )
+    parser.add_argument(
         "--exclude", help="Comma separated list of file patterns to exclude"
     )
     args = parser.parse_args()
 
+    include = args.include.split(",") if args.include else []
     exclude = args.exclude.split(",") if args.exclude else []
-    main(exclude)
+    main(include, exclude)

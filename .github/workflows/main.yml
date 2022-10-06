@@ -30,7 +30,7 @@ jobs:
       - run: pip install pycco
         shell: bash
 
-      - run: python make_pycco_pages.py --exclude day_template,make_pycco_pages.py
+      - run: python make_pycco_pages.py --exclude day_template,make_pycco_pages.py,noxfile.py,__init__.py
         shell: bash
 
       # Runs a single command using the runners shell
