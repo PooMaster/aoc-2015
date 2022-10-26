@@ -16,6 +16,7 @@ that produces such a hash.
 
 import hashlib
 import itertools
+from typing import Callable, Iterable
 
 
 def test_part1() -> None:
@@ -38,7 +39,14 @@ def has_leading_zeros(zero_count: int, test_string: str) -> bool:
     return test_string.startswith("0" * zero_count)
 
 
-def part1(input: str) -> int:
+def modified_strings(input: str) -> Iterable[str]:
+    for index in itertools.count():
+        yield input + str(index)
+
+
+def find_satisfactory_hash(
+    input: str, constraint_function: Callable[[str], bool]
+) -> int:
     """
     Append ever increasing integers to the input string until it MD5 hashes to a
     value that satisfies the problem constraint.
@@ -46,39 +54,38 @@ def part1(input: str) -> int:
     for index in itertools.count():
         test_string = input + str(index)
         hashed_string = hashlib.md5(test_string.encode()).hexdigest()
-        if has_leading_zeros(5, hashed_string):
+        if constraint_function(hashed_string):
             return index
 
     return -1
 
 
+def part1(input: str) -> int:
+    return find_satisfactory_hash(input, lambda s: has_leading_zeros(5, s))
+
+
 """
 ### Part 2:
 
-<paste in problem description here>
-"""
-
-
-def test_part2() -> None:
-    """For example:"""
-    # > `""` results in  `...`.
-    assert part2("") == ...
-
-
-"""
-<end of problem description>
+Now find one that starts with **six zeroes**.
 """
 
 # === Part 2 Solution: ===
 
 
-def part2(input: str) -> ...:
-    """ """
-    return ...
+"""
+After completing part 1, I extracted the logic into a function that takes a
+constraint function as an argument. This makes completing part 2 very
+straightforward.
+"""
+
+
+def part2(input: str) -> int:
+    return find_satisfactory_hash(input, lambda s: has_leading_zeros(6, s))
 
 
 if __name__ == "__main__":
-    puzzle_input = open("input.txt").read()
+    puzzle_input = open("input.txt").read().rstrip()
 
     # Print out part 1 solution
     print("Part 1:", part1(puzzle_input))
