@@ -8,10 +8,11 @@ nice.
 
 A **nice string** is one with all of the following properties:
 
-    It contains at least three vowels (`aeiou` only), like `aei`, `xazegov`, or
+-   It contains at least three vowels (`aeiou` only), like `aei`, `xazegov`, or
     `aeiouaeiouaeiou`. It contains at least one letter that appears twice in a
     row, like `xx`, `abcdde` (`dd`), or `aabbccdd` (`aa`, `bb`, `cc`, or `dd`).
-    It does **not** contain the strings `ab`, `cd`, `pq`, or `xy`, even if they
+
+-   It does **not** contain the strings `ab`, `cd`, `pq`, or `xy`, even if they
     are part of one of the other requirements.
 """
 
@@ -82,27 +83,39 @@ def part1(input: str) -> int:
 
 --- Part Two ---
 
-Realizing the error of his ways, Santa has switched to a better model of determining whether a string is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.
+Realizing the error of his ways, Santa has switched to a better model of
+determining whether a string is naughty or nice. None of the old rules apply, as
+they are all clearly ridiculous.
 
 Now, a **nice string** is one with all of the following properties:
 
-    It contains a pair of any two letters that appears at least twice in the string without overlapping, like `xyxy` (`xy`) or `aabcdefgaa` (`aa`), but not like `aaa` (`aa`, but it overlaps).
-    It contains at least one letter which repeats with exactly one letter between them, like `xyx`, `abcdefeghi` (`efe`), or even `aaa`.
+-   It contains a pair of any two letters that appears at least twice in the
+    string without overlapping, like `xyxy` (`xy`) or `aabcdefgaa` (`aa`), but not
+    like `aaa` (`aa`, but it overlaps).
+
+-   It contains at least one letter which repeats with exactly one letter between
+    them, like `xyx`, `abcdefeghi` (`efe`), or even `aaa`.
 """
 
 
 def test_part2() -> None:
     """For example:"""
-    # > `qjhvhtzxzqqjkmpb` is nice because is has a pair that appears twice (`qj`) and a letter that repeats with exactly one letter between them (`zxz`).
+    # > `qjhvhtzxzqqjkmpb` is nice because is has a pair that appears twice
+    # > (`qj`) and a letter that repeats with exactly one letter between them
+    # > (`zxz`).
     assert is_nice2("qjhvhtzxzqqjkmpb") is True
 
-    # > `xxyxx` is nice because it has a pair that appears twice and a letter that repeats with one between, even though the letters used by each rule overlap.
+    # > `xxyxx` is nice because it has a pair that appears twice and a letter
+    # > that repeats with one between, even though the letters used by each rule
+    # > overlap.
     assert is_nice2("xxyxx") is True
 
-    # > `uurcxstgmygtbstg` is naughty because it has a pair (`tg`) but no repeat with a single letter between them.
+    # > `uurcxstgmygtbstg` is naughty because it has a pair (`tg`) but no repeat
+    # > with a single letter between them.
     assert is_nice2("uurcxstgmygtbstg") is False
 
-    # > `ieodomkazucvgmuy` is naughty because it has a repeating letter with one between (`odo`), but no pair that appears twice.
+    # > `ieodomkazucvgmuy` is naughty because it has a repeating letter with one
+    # > between (`odo`), but no pair that appears twice.
     assert is_nice2("ieodomkazucvgmuy") is False
 
 
@@ -116,15 +129,17 @@ How many strings are nice under these new rules?
 def is_nice2(test_string: str) -> bool:
     return all(
         [
-            # It contains a pair of any two letters that appears at least twice in the string without overlapping
+            # It contains a pair of any two letters that appears at least twice
+            # in the string without overlapping
             re.search(r"(\w\w).*\1", test_string) is not None,
-            # It contains at least one letter which repeats with exactly one letter between them
+            # It contains at least one letter which repeats with exactly one
+            # letter between them
             re.search(r"(\w).\1", test_string) is not None,
         ]
     )
 
 
-def part2(input: str) -> ...:
+def part2(input: str) -> int:
     """Return the number of nice lines in the given multiline string"""
     return sum(is_nice2(line) for line in input.splitlines())
 

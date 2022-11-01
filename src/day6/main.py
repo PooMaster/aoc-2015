@@ -28,32 +28,6 @@ import re
 from typing import Iterable, NamedTuple, TypeVar
 
 
-class Pos(NamedTuple):
-    """
-    This class represents a location on the problem grid.
-    """
-
-    x: int
-    y: int
-
-
-# Grids are a variable type to support using bools in part 1 and ints int part 2.
-T = TypeVar("T")
-Grid = dict[Pos, T]
-
-
-def new_grid(size: tuple[int, int], initial_state: T) -> Grid[T]:
-    """
-    Makes and returns a new grid with the given size with all positions in the
-    same initial state.
-    """
-    size_x, size_y = size
-    return dict(
-        (Pos(x, y), initial_state)
-        for x, y in itertools.product(range(size_x), range(size_y))
-    )
-
-
 def test_part1() -> None:
     """For example:"""
     lights = new_grid((1000, 1000), False)
@@ -89,6 +63,32 @@ After following the instructions, **how many lights are lit**?
 # === Part 1 Solution: ===
 
 
+class Pos(NamedTuple):
+    """
+    This class represents a location on the problem grid.
+    """
+
+    x: int
+    y: int
+
+
+# Grids are a variable type to support using bools in part 1 and ints int part 2.
+T = TypeVar("T")
+Grid = dict[Pos, T]
+
+
+def new_grid(size: tuple[int, int], initial_state: T) -> Grid[T]:
+    """
+    Makes and returns a new grid with the given size with all positions in the
+    same initial state.
+    """
+    size_x, size_y = size
+    return dict(
+        (Pos(x, y), initial_state)
+        for x, y in itertools.product(range(size_x), range(size_y))
+    )
+
+
 class InstructionKind(Enum):
     on = "turn on"
     off = "turn off"
@@ -111,7 +111,9 @@ def parse_instruction(instruction_string: str) -> Instruction:
     Parse an instruction string into a named tuple.
 
         >>> parse_instruction("turn on 0,0 through 999,999")
-        Instruction(kind=<InstructionKind.on: 'turn on'>, x_range=range(0, 1000), y_range=range(0, 1000))
+        Instruction(kind=<InstructionKind.on: 'turn on'>,
+            x_range=range(0, 1000),
+            y_range=range(0, 1000))
     """
     m = instruction_pattern.fullmatch(instruction_string)
     if not m:
@@ -245,7 +247,7 @@ def total_brightness(lights: Grid[int]) -> int:
     return sum(lights.values())
 
 
-def part2(input: str) -> ...:
+def part2(input: str) -> int:
     """
     Perform each line of input as an instruction on a 1000 by 1000 grid of
     lights and return the number of lights lits at the end.
