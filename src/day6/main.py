@@ -72,7 +72,7 @@ class Pos(NamedTuple):
     y: int
 
 
-# Grids are a variable type to support using bools in part 1 and ints int part 2.
+# Grids are a generic type to support using `bool`s in part 1 and `int`s in part 2.
 T = TypeVar("T")
 Grid = dict[Pos, T]
 
