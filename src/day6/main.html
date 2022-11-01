@@ -46,10 +46,10 @@ doing the instructions Santa sent you in order.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <p>This class represents a location on the problem grid.</p>
+      <p>For example:</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pos</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -61,8 +61,8 @@ doing the instructions Santa sent you in order.</p>
       
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
-    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">lights</span> <span class="o">=</span> <span class="n">new_grid</span><span class="p">((</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="n">lit</span> <span class="k">for</span> <span class="n">lit</span> <span class="ow">in</span> <span class="n">lights</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -70,73 +70,6 @@ doing the instructions Santa sent you in order.</p>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      <p>Grids are a variable type to support using bools in part 1 and ints int part 2.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
-<span class="n">Grid</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Pos</span><span class="p">,</span> <span class="n">T</span><span class="p">]</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-4'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-4'>#</a>
-      </div>
-      <p>Makes and returns a new grid with the given size with all positions in the
-same initial state.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">new_grid</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">initial_state</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grid</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-5'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-5'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">size_x</span><span class="p">,</span> <span class="n">size_y</span> <span class="o">=</span> <span class="n">size</span>
-    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
-        <span class="p">(</span><span class="n">Pos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">initial_state</span><span class="p">)</span>
-        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">size_x</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_y</span><span class="p">))</span>
-    <span class="p">)</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-6'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-6'>#</a>
-      </div>
-      <p>For example:</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-7'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-7'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">lights</span> <span class="o">=</span> <span class="n">new_grid</span><span class="p">((</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">),</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="k">assert</span> <span class="nb">all</span><span class="p">(</span><span class="ow">not</span> <span class="n">lit</span> <span class="k">for</span> <span class="n">lit</span> <span class="ow">in</span> <span class="n">lights</span><span class="o">.</span><span class="n">values</span><span class="p">())</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-8'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-8'>#</a>
       </div>
       <blockquote>
 <p><code>turn on 0,0 through 999,999</code> would turn on (or leave on) every light.</p>
@@ -148,10 +81,10 @@ same initial state.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-9'>
+  <div class='section' id='section-4'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-9'>#</a>
+        <a class='octothorpe' href='#section-4'>#</a>
       </div>
       <blockquote>
 <p><code>toggle 0,0 through 999,0</code> would toggle the first line of 1000 lights,
@@ -165,10 +98,10 @@ off.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-10'>
+  <div class='section' id='section-5'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-10'>#</a>
+        <a class='octothorpe' href='#section-5'>#</a>
       </div>
       <blockquote>
 <p><code>turn off 499,499 through 500,500</code> would turn off (or leave off) the
@@ -188,10 +121,10 @@ middle four lights.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-11'>
+  <div class='section' id='section-6'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-11'>#</a>
+        <a class='octothorpe' href='#section-6'>#</a>
       </div>
       <p>After following the instructions, <strong>how many lights are lit</strong>?</p>
     </div>
@@ -200,15 +133,82 @@ middle four lights.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-12'>
+  <div class='section' id='section-7'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-12'>#</a>
+        <a class='octothorpe' href='#section-7'>#</a>
       </div>
       <h3><span id="part-1-solution:" href="part-1-solution:"> Part 1 Solution: </span></h3>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      <p>This class represents a location on the problem grid.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">class</span> <span class="nc">Pos</span><span class="p">(</span><span class="n">NamedTuple</span><span class="p">):</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">x</span><span class="p">:</span> <span class="nb">int</span>
+    <span class="n">y</span><span class="p">:</span> <span class="nb">int</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      <p>Grids are a variable type to support using bools in part 1 and ints int part 2.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="n">T</span> <span class="o">=</span> <span class="n">TypeVar</span><span class="p">(</span><span class="s2">&quot;T&quot;</span><span class="p">)</span>
+<span class="n">Grid</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">[</span><span class="n">Pos</span><span class="p">,</span> <span class="n">T</span><span class="p">]</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      <p>Makes and returns a new grid with the given size with all positions in the
+same initial state.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">new_grid</span><span class="p">(</span><span class="n">size</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="n">initial_state</span><span class="p">:</span> <span class="n">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Grid</span><span class="p">[</span><span class="n">T</span><span class="p">]:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">size_x</span><span class="p">,</span> <span class="n">size_y</span> <span class="o">=</span> <span class="n">size</span>
+    <span class="k">return</span> <span class="nb">dict</span><span class="p">(</span>
+        <span class="p">(</span><span class="n">Pos</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">),</span> <span class="n">initial_state</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="n">itertools</span><span class="o">.</span><span class="n">product</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">size_x</span><span class="p">),</span> <span class="nb">range</span><span class="p">(</span><span class="n">size_y</span><span class="p">))</span>
+    <span class="p">)</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -254,7 +254,9 @@ middle four lights.</p>
       </div>
       <p>Parse an instruction string into a named tuple.</p>
 <pre><code>&gt;&gt;&gt; parse_instruction("turn on 0,0 through 999,999")
-Instruction(kind=&lt;InstructionKind.on: 'turn on'&gt;, x_range=range(0, 1000), y_range=range(0, 1000))
+Instruction(kind=&lt;InstructionKind.on: 'turn on'&gt;,
+    x_range=range(0, 1000),
+    y_range=range(0, 1000))
 </code></pre>
     </div>
     <div class='code'>
@@ -529,7 +531,7 @@ part 2 rules this time.</p>
 lights and return the number of lights lits at the end.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">...</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>

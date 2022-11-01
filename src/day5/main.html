@@ -22,12 +22,17 @@
 <p>Santa needs help figuring out which strings in his text file are naughty or
 nice.</p>
 <p>A <strong>nice string</strong> is one with all of the following properties:</p>
-<pre><code>It contains at least three vowels (`aeiou` only), like `aei`, `xazegov`, or
-`aeiouaeiouaeiou`. It contains at least one letter that appears twice in a
-row, like `xx`, `abcdde` (`dd`), or `aabbccdd` (`aa`, `bb`, `cc`, or `dd`).
-It does **not** contain the strings `ab`, `cd`, `pq`, or `xy`, even if they
-are part of one of the other requirements.
-</code></pre>
+<ul>
+<li>
+<p>It contains at least three vowels (<code>aeiou</code> only), like <code>aei</code>, <code>xazegov</code>, or
+    <code>aeiouaeiouaeiou</code>. It contains at least one letter that appears twice in a
+    row, like <code>xx</code>, <code>abcdde</code> (<code>dd</code>), or <code>aabbccdd</code> (<code>aa</code>, <code>bb</code>, <code>cc</code>, or <code>dd</code>).</p>
+</li>
+<li>
+<p>It does <strong>not</strong> contain the strings <code>ab</code>, <code>cd</code>, <code>pq</code>, or <code>xy</code>, even if they
+    are part of one of the other requirements.</p>
+</li>
+</ul>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span></pre></div>
@@ -253,11 +258,21 @@ string.</p>
       </div>
       <h3>Part 2:</h3>
 <p>&mdash; Part Two &mdash;</p>
-<p>Realizing the error of his ways, Santa has switched to a better model of determining whether a string is naughty or nice. None of the old rules apply, as they are all clearly ridiculous.</p>
+<p>Realizing the error of his ways, Santa has switched to a better model of
+determining whether a string is naughty or nice. None of the old rules apply, as
+they are all clearly ridiculous.</p>
 <p>Now, a <strong>nice string</strong> is one with all of the following properties:</p>
-<pre><code>It contains a pair of any two letters that appears at least twice in the string without overlapping, like `xyxy` (`xy`) or `aabcdefgaa` (`aa`), but not like `aaa` (`aa`, but it overlaps).
-It contains at least one letter which repeats with exactly one letter between them, like `xyx`, `abcdefeghi` (`efe`), or even `aaa`.
-</code></pre>
+<ul>
+<li>
+<p>It contains a pair of any two letters that appears at least twice in the
+    string without overlapping, like <code>xyxy</code> (<code>xy</code>) or <code>aabcdefgaa</code> (<code>aa</code>), but not
+    like <code>aaa</code> (<code>aa</code>, but it overlaps).</p>
+</li>
+<li>
+<p>It contains at least one letter which repeats with exactly one letter between
+    them, like <code>xyx</code>, <code>abcdefeghi</code> (<code>efe</code>), or even <code>aaa</code>.</p>
+</li>
+</ul>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="k">return</span> <span class="nb">sum</span><span class="p">(</span><span class="n">is_nice</span><span class="p">(</span><span class="n">line</span><span class="p">)</span> <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="nb">input</span><span class="o">.</span><span class="n">splitlines</span><span class="p">())</span></pre></div>
@@ -294,7 +309,9 @@ It contains at least one letter which repeats with exactly one letter between th
         <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <blockquote>
-<p><code>qjhvhtzxzqqjkmpb</code> is nice because is has a pair that appears twice (<code>qj</code>) and a letter that repeats with exactly one letter between them (<code>zxz</code>).</p>
+<p><code>qjhvhtzxzqqjkmpb</code> is nice because is has a pair that appears twice
+(<code>qj</code>) and a letter that repeats with exactly one letter between them
+(<code>zxz</code>).</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -308,7 +325,9 @@ It contains at least one letter which repeats with exactly one letter between th
         <a class='octothorpe' href='#section-21'>#</a>
       </div>
       <blockquote>
-<p><code>xxyxx</code> is nice because it has a pair that appears twice and a letter that repeats with one between, even though the letters used by each rule overlap.</p>
+<p><code>xxyxx</code> is nice because it has a pair that appears twice and a letter
+that repeats with one between, even though the letters used by each rule
+overlap.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -322,7 +341,8 @@ It contains at least one letter which repeats with exactly one letter between th
         <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <blockquote>
-<p><code>uurcxstgmygtbstg</code> is naughty because it has a pair (<code>tg</code>) but no repeat with a single letter between them.</p>
+<p><code>uurcxstgmygtbstg</code> is naughty because it has a pair (<code>tg</code>) but no repeat
+with a single letter between them.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -336,7 +356,8 @@ It contains at least one letter which repeats with exactly one letter between th
         <a class='octothorpe' href='#section-23'>#</a>
       </div>
       <blockquote>
-<p><code>ieodomkazucvgmuy</code> is naughty because it has a repeating letter with one between (<code>odo</code>), but no pair that appears twice.</p>
+<p><code>ieodomkazucvgmuy</code> is naughty because it has a repeating letter with one
+between (<code>odo</code>), but no pair that appears twice.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -387,7 +408,8 @@ It contains at least one letter which repeats with exactly one letter between th
       <div class='octowrap'>
         <a class='octothorpe' href='#section-27'>#</a>
       </div>
-      <p>It contains a pair of any two letters that appears at least twice in the string without overlapping</p>
+      <p>It contains a pair of any two letters that appears at least twice
+in the string without overlapping</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>            <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\w\w).*\1&quot;</span><span class="p">,</span> <span class="n">test_string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span></pre></div>
@@ -399,7 +421,8 @@ It contains at least one letter which repeats with exactly one letter between th
       <div class='octowrap'>
         <a class='octothorpe' href='#section-28'>#</a>
       </div>
-      <p>It contains at least one letter which repeats with exactly one letter between them</p>
+      <p>It contains at least one letter which repeats with exactly one
+letter between them</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>            <span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="sa">r</span><span class="s2">&quot;(\w).\1&quot;</span><span class="p">,</span> <span class="n">test_string</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">,</span>
@@ -416,7 +439,7 @@ It contains at least one letter which repeats with exactly one letter between th
       <p>Return the number of nice lines in the given multiline string</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="o">...</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
