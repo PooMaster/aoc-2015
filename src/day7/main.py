@@ -292,28 +292,33 @@ def parse_line(line: str) -> tuple[Wire, Value] | Gate:
     raise ValueError(f"Could not parse line: '{line}'")
 
 
-def resolve_wire_values(input: str) -> WireValues:
+def parse_input(input: str) -> tuple[list[tuple[Wire, Value]], list[Gate]]:
     """
-    Parse the input lines into initial values and gates. Populated the wire
-    value dictionary with the initial values. Then, resolve all the gates in a
-    valid order while updating the wire value dictionary with the gate outputs.
-    Once all gates have been resolved, return the final resulting wire value
-    dictionary.
+    Parse the problem input into a list of initial wire values and a list of
+    logic gate objects.
     """
-
-    initial_values: list[tuple[Wire, Value]] = []
-    unresolved_gates: set[Gate] = set()
+    initial_values = []
+    unresolved_gates = []
 
     # Parse the input into initial values and gate descriptions
     for line in input.strip().splitlines():
         value = parse_line(line.strip())
         if isinstance(value, Gate):
-            unresolved_gates.add(value)
+            unresolved_gates.append(value)
         else:
             initial_values.append(value)
 
-    # Create the wire value dictionary with the parsed initial values
-    wire_values = dict(initial_values)
+    return initial_values, unresolved_gates
+
+
+def resolve_wire_values(gates: list[Gate], wire_values: WireValues) -> WireValues:
+    """
+    Resolve all the gates in a valid order while updating the wire value
+    dictionary with the gate outputs. Once all gates have been resolved, return
+    the final resulting wire value dictionary.
+    """
+
+    unresolved_gates = set(gates)
 
     # Keep looping until all gates are resolved
     while len(unresolved_gates) > 0:
@@ -345,33 +350,53 @@ def resolve_wire_values(input: str) -> WireValues:
 
 
 def part1(input: str) -> Value:
-    wire_values = resolve_wire_values(input)
+    """
+    Resolve all wire values according to the problem input's initial values and
+    gate descriptions. Return the final value on the `a` wire.
+    """
+    initial_values, unresolved_gates = parse_input(input)
+
+    # Create the wire value dictionary with the parsed initial values
+    wire_values = dict(initial_values)
+
+    wire_values = resolve_wire_values(unresolved_gates, wire_values)
     return wire_values["a"]
 
 
 """
 ### Part 2:
 
-<paste in problem description here>
+--- Part Two ---
+
+Now, take the signal you got on wire `a`, override wire `b` to that signal, and
+reset the other wires (including wire `a`). What new signal is ultimately
+provided to wire `a`?
 """
 
-
-def test_part2() -> None:
-    """For example:"""
-    # > `""` results in  `...`.
-    assert part2("") == ...
-
-
-"""
-<end of problem description>
-"""
 
 # === Part 2 Solution: ===
 
 
-def part2(input: str) -> ...:
-    """ """
-    return ...
+def part2(input: str) -> Value:
+    """
+    Resolve all wire values according to the problem input's initial values and
+    gate descriptions. Then, repeat the resolution with wire `b` set to the
+    value that `a` was resolved to in the initial resolution. Return the value
+    of `a` after the second resolution.
+    """
+    initial_values, unresolved_gates = parse_input(input)
+
+    # Do first wire value resolution
+    first_wire_values = dict(initial_values)
+    first_wire_values = resolve_wire_values(unresolved_gates, first_wire_values)
+
+    # Recreate initial wire values with new `b` value set to the old `a` value
+    second_wire_values = dict(initial_values)
+    second_wire_values["b"] = first_wire_values["a"]
+
+    # Resolve again and return
+    second_wire_values = resolve_wire_values(unresolved_gates, second_wire_values)
+    return second_wire_values["a"]
 
 
 if __name__ == "__main__":
