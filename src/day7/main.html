@@ -1,0 +1,1058 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>main.py</title>
+  <link rel="stylesheet" href="../../pycco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div class='section'>
+    <div class='docs'><h1>main.py</h1></div>
+  </div>
+  <div class='clearall'>
+  <div class='section' id='section-0'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-0'>#</a>
+      </div>
+      <h3>Part 1:</h3>
+<p>&mdash; Day 7: Some Assembly Required &mdash;</p>
+<p>This year, Santa brought little Bobby Tables a set of wires and bitwise logic
+gates! Unfortunately, little Bobby is a little under the recommended age range,
+and he needs help assembling the circuit.</p>
+<p>Each wire has an identifier (some lowercase letters) and can carry a 16-bit
+signal (a number from <code>0</code> to <code>65535</code>). A signal is provided to each wire by a
+gate, another wire, or some specific value. Each wire can only get a signal from
+one source, but can provide its signal to multiple destinations. A gate provides
+no signal until all of its inputs have a signal.</p>
+<p>The included instructions booklet describes how to connect the parts together:
+<code>x AND y -&gt; z</code> means to connect wires <code>x</code> and <code>y</code> to an AND gate, and then
+connect its output to wire <code>z</code>.</p>
+<p>For example:</p>
+<ul>
+<li>
+<p><code>123 -&gt; x</code> means that the signal <code>123</code> is provided to wire <code>x</code>.</p>
+</li>
+<li>
+<p><code>x AND y -&gt; z</code> meansthat the bitwise AND of wire <code>x</code> and wire <code>y</code> is provided
+  to wire <code>z</code>.</p>
+</li>
+<li>
+<p><code>p LSHIFT 2 -&gt; q</code> means that the value from wire <code>p</code> is left-shifted by <code>2</code>
+  and then provided to wire <code>q</code>.</p>
+</li>
+<li>
+<p><code>NOT e -&gt; f</code> means that the bitwise complement of the value from wire <code>e</code> is
+  provided to wire <code>f</code>.</p>
+</li>
+</ul>
+<p>Other possible gates include <code>OR</code> (bitwise OR) and <code>RSHIFT</code> (right-shift). If,
+for some reason, you&rsquo;d like to <strong>emulate</strong> the circuit instead, almost all
+programming languages (for example, C, JavaScript, or Python) provide operators
+for these gates.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">abc</span> <span class="kn">import</span> <span class="n">ABC</span><span class="p">,</span> <span class="n">abstractmethod</span>
+<span class="kn">from</span> <span class="nn">dataclasses</span> <span class="kn">import</span> <span class="n">dataclass</span>
+<span class="kn">import</span> <span class="nn">logging</span>
+<span class="kn">import</span> <span class="nn">re</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-1'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-1'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-2'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-2'>#</a>
+      </div>
+      <p>For example, here is a simple circuit:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">simple_circuit</span> <span class="o">=</span> <span class="s2">&quot;&quot;&quot;</span><span class="se">\</span>
+<span class="s2">        123 -&gt; x</span>
+<span class="s2">        456 -&gt; y</span>
+<span class="s2">        x AND y -&gt; d</span>
+<span class="s2">        x OR y -&gt; e</span>
+<span class="s2">        x LSHIFT 2 -&gt; f</span>
+<span class="s2">        y RSHIFT 2 -&gt; g</span>
+<span class="s2">        NOT x -&gt; h</span>
+<span class="s2">        NOT y -&gt; i</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">In little Bobby&#39;s kit&#39;s instructions booklet (provided as your puzzle input),</span>
+<span class="s2">what signal is ultimately provided to **wire `a`**?</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">The trickiest part of this problem that jumps out at me immediately is the fact</span>
+<span class="s2">that these wire and gate descriptions can come in any order. Since gates can&#39;t</span>
+<span class="s2">be resolved until the values of the input wires are known, it is possible for</span>
+<span class="s2">gates to be listed in the input before it is possible to know its input wires&#39;</span>
+<span class="s2">values yet. This means that all gate descriptions will have to be parsed out</span>
+<span class="s2">beforehand and then resolved in the appropriate order.</span>
+
+<span class="s2">This circuit resolution algorithm could be done in a pure brute force way, but</span>
+<span class="s2">I&#39;d like to find an easy way to make it faster and simpler to reason about. The</span>
+<span class="s2">first thing to come to mind is having two sets of wires: the set that are known</span>
+<span class="s2">about but don&#39;t have a value yet, and the set that have values already. Then,</span>
+<span class="s2">if part of a gate&#39;s information is the set of wires that are needed as inputs,</span>
+<span class="s2">a single set operation can be done to see if all required wires have values yet.</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">Now, I want to come up with some types for this code. The main three entities</span>
+<span class="s2">in the problem description are wires, signals, and gates.</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    Gates have a set of input wires, one output wire, and a way of resolving the</span>
+<span class="s2">    input values into the output values. Inputs can be provided as a wire name</span>
+<span class="s2">    that needs to be resolved or as a preset static value.</span>
+
+<span class="s2">    This abstract base class cannot be used directly. Subclasses must be made</span>
+<span class="s2">    for each type of gate which implement the `resolve_ouput_value()` method.</span>
+
+<span class="s2">    &gt; This got a little nastier than I&#39;d hoped since I needed these `Gate`</span>
+<span class="s2">    objects to be hashable in the logic below. This required the use of frozen</span>
+<span class="s2">    dataclasses and frozen sets. The gate objects themselves should never</span>
+<span class="s2">    change, so that&#39;s fine. It just adds more syntactic noise.</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        (a,) = values</span>
+<span class="s2">        return a</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">@dataclass(eq=True, frozen=True)</span>
+<span class="s2">class AndGate(Gate):</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        a, b = values</span>
+<span class="s2">        return a &amp; b</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">@dataclass(eq=True, frozen=True)</span>
+<span class="s2">class OrGate(Gate):</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        a, b = values</span>
+<span class="s2">        return a | b</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">@dataclass(eq=True, frozen=True)</span>
+<span class="s2">class LShiftGate(Gate):</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">    shift_amount: int</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        (a,) = values</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        return (a &lt;&lt; self.shift_amount) &amp; MAX_VALUE</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">@dataclass(eq=True, frozen=True)</span>
+<span class="s2">class RShiftGate(Gate):</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">    shift_amount: int</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        (a,) = values</span>
+<span class="s2">        return a &gt;&gt; self.shift_amount</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">@dataclass(eq=True, frozen=True)</span>
+<span class="s2">class NotGate(Gate):</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+<span class="s2">    def resolve_output_value(self, *values: Value) -&gt; Value:</span>
+<span class="s2">        (a,) = values</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        return MAX_VALUE - a</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">def classify_inputs(*inputs: str) -&gt; tuple[frozenset[Wire], frozenset[Value]]:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    wire_set = set()</span>
+<span class="s2">    value_set = set()</span>
+
+<span class="s2">    for input in inputs:</span>
+<span class="s2">        if input.isdecimal():</span>
+<span class="s2">            value_set.add(int(input))</span>
+<span class="s2">        else:</span>
+<span class="s2">            wire_set.add(input)</span>
+
+<span class="s2">    return frozenset(wire_set), frozenset(value_set)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">def parse_line(line: str) -&gt; tuple[Wire, Value] | Gate:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    wire = r&quot;[a-z]+&quot;</span>
+<span class="s2">    value = r&quot;\d+&quot;</span>
+<span class="s2">    input = f&quot;(?:</span><span class="si">{wire}</span><span class="s2">)|(?:</span><span class="si">{value}</span><span class="s2">)&quot;</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{value}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        value, wire = m.groups()</span>
+<span class="s2">        return (wire, int(value))</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{input}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1)</span>
+<span class="s2">        return ConnectionGate(</span>
+<span class="s2">            wire_inputs=wire_inputs, static_inputs=static_inputs, output=output</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{input}</span><span class="s2">) AND (</span><span class="si">{input}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, input2, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1, input2)</span>
+<span class="s2">        return AndGate(</span>
+<span class="s2">            wire_inputs=wire_inputs, static_inputs=static_inputs, output=output</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{input}</span><span class="s2">) OR (</span><span class="si">{input}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, input2, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1, input2)</span>
+<span class="s2">        return OrGate(</span>
+<span class="s2">            wire_inputs=wire_inputs, static_inputs=static_inputs, output=output</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{input}</span><span class="s2">) LSHIFT (</span><span class="si">{value}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, value, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1)</span>
+<span class="s2">        return LShiftGate(</span>
+<span class="s2">            wire_inputs=wire_inputs,</span>
+<span class="s2">            static_inputs=static_inputs,</span>
+<span class="s2">            shift_amount=int(value),</span>
+<span class="s2">            output=output,</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;(</span><span class="si">{input}</span><span class="s2">) RSHIFT (</span><span class="si">{value}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, value, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1)</span>
+<span class="s2">        return RShiftGate(</span>
+<span class="s2">            wire_inputs=wire_inputs,</span>
+<span class="s2">            static_inputs=static_inputs,</span>
+<span class="s2">            shift_amount=int(value),</span>
+<span class="s2">            output=output,</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    if m := re.fullmatch(rf&quot;NOT (</span><span class="si">{input}</span><span class="s2">) -&gt; (</span><span class="si">{wire}</span><span class="s2">)&quot;, line):</span>
+<span class="s2">        input1, output = m.groups()</span>
+<span class="s2">        wire_inputs, static_inputs = classify_inputs(input1)</span>
+<span class="s2">        return NotGate(</span>
+<span class="s2">            wire_inputs=wire_inputs, static_inputs=static_inputs, output=output</span>
+<span class="s2">        )</span>
+
+<span class="s2">    raise ValueError(f&quot;Could not parse line: &#39;</span><span class="si">{line}</span><span class="s2">&#39;&quot;)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">def parse_input(input: str) -&gt; tuple[list[tuple[Wire, Value]], list[Gate]]:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    initial_values = []</span>
+<span class="s2">    unresolved_gates = []</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    for line in input.strip().splitlines():</span>
+<span class="s2">        value = parse_line(line.strip())</span>
+<span class="s2">        if isinstance(value, Gate):</span>
+<span class="s2">            unresolved_gates.append(value)</span>
+<span class="s2">        else:</span>
+<span class="s2">            initial_values.append(value)</span>
+
+<span class="s2">    return initial_values, unresolved_gates</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">def resolve_wire_values(gates: list[Gate], wire_values: WireValues) -&gt; WireValues:</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">    unresolved_gates = set(gates)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    while len(unresolved_gates) &gt; 0:</span>
+<span class="s2">        logging.debug(wire_values)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        for gate in unresolved_gates:</span>
+<span class="s2">            if gate.wire_inputs.issubset(wire_values.keys()):</span>
+<span class="s2">                break</span>
+<span class="s2">        else:</span>
+<span class="s2">            logging.error(wire_values)</span>
+<span class="s2">            logging.error(unresolved_gates)</span>
+<span class="s2">            raise ValueError(&quot;No gates found with all resolved inputs&quot;)</span>
+
+<span class="s2">        logging.debug(f&quot;Resolving gate </span><span class="si">{gate}</span><span class="s2">&quot;)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        resolved_value = gate.resolve_output_value(</span>
+<span class="s2">            *(wire_values[wire] for wire in gate.wire_inputs), *gate.static_inputs</span>
+<span class="s2">        )</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        wire_values[gate.output] = resolved_value</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">        unresolved_gates.remove(gate)</span>
+
+<span class="s2">    return wire_values</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">def part1(input: str) -&gt; Value:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    initial_values, unresolved_gates = parse_input(input)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    wire_values = dict(initial_values)</span>
+
+<span class="s2">    wire_values = resolve_wire_values(unresolved_gates, wire_values)</span>
+<span class="s2">    return wire_values[&quot;a&quot;]</span>
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+
+<span class="s2">#DIVIDER</span>
+<span class="s2">def part2(input: str) -&gt; Value:</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    initial_values, unresolved_gates = parse_input(input)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    first_wire_values = dict(initial_values)</span>
+<span class="s2">    first_wire_values = resolve_wire_values(unresolved_gates, first_wire_values)</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    second_wire_values = dict(initial_values)</span>
+<span class="s2">    second_wire_values[&quot;b&quot;] = first_wire_values[&quot;a&quot;]</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    second_wire_values = resolve_wire_values(unresolved_gates, second_wire_values)</span>
+<span class="s2">    return second_wire_values[&quot;a&quot;]</span>
+
+
+<span class="s2">if __name__ == &quot;__main__&quot;:</span>
+<span class="s2">    logging.basicConfig(level=logging.INFO)</span>
+
+<span class="s2">    puzzle_input = open(&quot;input.txt&quot;).read()</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    print(&quot;Part 1:&quot;, part1(puzzle_input))</span>
+<span class="s2">#DIVIDER</span>
+<span class="s2">    print(&quot;Part 2:&quot;, part2(puzzle_input))</span>
+
+</pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <h1>After it is run, these are the signals on the wires:</h1>
+<p>expected_signals = {
+    &ldquo;d&rdquo;: 72,
+    &ldquo;e&rdquo;: 507,
+    &ldquo;f&rdquo;: 492,
+    &ldquo;g&rdquo;: 114,
+    &ldquo;h&rdquo;: 65412,
+    &ldquo;i&rdquo;: 65079,
+    &ldquo;x&rdquo;: 123,
+    &ldquo;y&rdquo;: 456,
+}</p>
+<p>assert resolve_wire_values(simple_circuit) == expected_signals</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-4'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-4'>#</a>
+      </div>
+      <h1>=== Part 1 Solution: ===</h1>
+<h2>Initial Thoughts</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-5'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-5'>#</a>
+      </div>
+      <h2>Types</h2>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-6'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-6'>#</a>
+      </div>
+      <h1>Wire names are just lowercase strings</h1>
+<p>Wire = str</p>
+<h1>Values are integers</h1>
+<p>Value = int</p>
+<h1>Wire values are maintained in a dictionary</h1>
+<p>WireValues = dict[Wire, Value]</p>
+<h1>Values are 16 bit integers, so the maximum possible size is 2^16 - 1</h1>
+<p>MAX_VALUE: Value = 2**16 - 1</p>
+<p>@dataclass(eq=True, frozen=True)
+class Gate(ABC):</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-7'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-7'>#</a>
+      </div>
+      <h1>Note that all gates in the problem don&rsquo;t care about wire order, so there</h1>
+<h1>is no need to remember the wire order.</h1>
+<p>wire_inputs: frozenset[Wire]
+static_inputs: frozenset[Value]
+output: Wire</p>
+<p>@abstractmethod
+def resolve_output_value(self, *values: Value) -&gt; Value:
+    return 0</p>
+<p>@dataclass(eq=True, frozen=True)
+class ConnectionGate(Gate):
+This represents two wires being connected</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-8'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-8'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-9'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-9'>#</a>
+      </div>
+      <p>This represents the AND gate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-10'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-10'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-11'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-11'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-12'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-12'>#</a>
+      </div>
+      <p>This represents the OR gate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-13'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-13'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <p>This represents the LSHIFT gate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-16'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-16'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-17'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-17'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
+      <p>Need to mask off the return value in case the value was shifted beyond
+the 16 bit limit.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <p>This represents the RSHIFT gate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-20'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-20'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-21'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-21'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-22'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-22'>#</a>
+      </div>
+      <p>This represents the NOT gate</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-23'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-23'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-24'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-24'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-25'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-25'>#</a>
+      </div>
+      <p>Bitwise NOT in Python is weird since all ints are signed with
+arbitrary precision. Using subtraction as a workaround.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
+      <p>This parser helper function separates inputs into wire and static value
+sets.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>This function takes in a line from the input and parses it into the
+appropriate value. All input lines are either values being assigned directly
+to wires or gate descriptions.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      <p>Match initial values being assigned directly to wires</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-31'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-31'>#</a>
+      </div>
+      <p>Match wire connections</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-32'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-32'>#</a>
+      </div>
+      <p>Match AND gates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-33'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-33'>#</a>
+      </div>
+      <p>Match OR gates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-34'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-34'>#</a>
+      </div>
+      <p>Match LSHIFT gates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-35'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-35'>#</a>
+      </div>
+      <p>Match RSHIFT gates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-36'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-36'>#</a>
+      </div>
+      <p>Match NOT gates</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-37'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-37'>#</a>
+      </div>
+      <p>Parse the problem input into a list of initial wire values and a list of
+logic gate objects.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-38'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-38'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-39'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-39'>#</a>
+      </div>
+      <p>Parse the input into initial values and gate descriptions</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-40'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-40'>#</a>
+      </div>
+      <p>Resolve all the gates in a valid order while updating the wire value
+dictionary with the gate outputs. Once all gates have been resolved, return
+the final resulting wire value dictionary.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-41'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-41'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-42'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-42'>#</a>
+      </div>
+      <p>Keep looping until all gates are resolved</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-43'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-43'>#</a>
+      </div>
+      <p>Find a gate whose input wires all have values</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-44'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-44'>#</a>
+      </div>
+      <p>Get the gate&rsquo;s resolved value</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-45'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-45'>#</a>
+      </div>
+      <p>Record the gate&rsquo;s resolved value to its output wire</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-46'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-46'>#</a>
+      </div>
+      <p>Remove the gate from the unresolved list</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-47'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-47'>#</a>
+      </div>
+      <p>Resolve all wire values according to the problem input&rsquo;s initial values and
+gate descriptions. Return the final value on the <code>a</code> wire.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-48'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-48'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-49'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-49'>#</a>
+      </div>
+      <p>Create the wire value dictionary with the parsed initial values</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-50'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-50'>#</a>
+      </div>
+      <h3>Part 2:</h3>
+<p>&mdash; Part Two &mdash;</p>
+<p>Now, take the signal you got on wire <code>a</code>, override wire <code>b</code> to that signal, and
+reset the other wires (including wire <code>a</code>). What new signal is ultimately
+provided to wire <code>a</code>?</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-51'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-51'>#</a>
+      </div>
+      <h3><span id="part-2-solution:" href="part-2-solution:"> Part 2 Solution: </span></h3>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-52'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-52'>#</a>
+      </div>
+      <p>Resolve all wire values according to the problem input&rsquo;s initial values and
+gate descriptions. Then, repeat the resolution with wire <code>b</code> set to the
+value that <code>a</code> was resolved to in the initial resolution. Return the value
+of <code>a</code> after the second resolution.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-53'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-53'>#</a>
+      </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-54'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-54'>#</a>
+      </div>
+      <p>Do first wire value resolution</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-55'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-55'>#</a>
+      </div>
+      <p>Recreate initial wire values with new <code>b</code> value set to the old <code>a</code> value</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-56'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-56'>#</a>
+      </div>
+      <p>Resolve again and return</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-57'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-57'>#</a>
+      </div>
+      <p>Print out part 1 solution</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-58'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-58'>#</a>
+      </div>
+      <p>Print out part 2 solution</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+</div>
+</body>
