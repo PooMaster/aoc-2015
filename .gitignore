@@ -4,3 +4,4 @@ docs/
 pages/
 .nox
 .mypy_cache
+.vscode
