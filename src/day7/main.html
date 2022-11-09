@@ -89,8 +89,35 @@ for these gates.</p>
 <span class="s2">        x LSHIFT 2 -&gt; f</span>
 <span class="s2">        y RSHIFT 2 -&gt; g</span>
 <span class="s2">        NOT x -&gt; h</span>
-<span class="s2">        NOT y -&gt; i</span>
-<span class="s2">#DIVIDER</span>
+<span class="s2">        NOT y -&gt; i&quot;&quot;&quot;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-3'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-3'>#</a>
+      </div>
+      <p>After it is run, these are the signals on the wires:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">expected_signals</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;d&quot;</span><span class="p">:</span> <span class="mi">72</span><span class="p">,</span>
+        <span class="s2">&quot;e&quot;</span><span class="p">:</span> <span class="mi">507</span><span class="p">,</span>
+        <span class="s2">&quot;f&quot;</span><span class="p">:</span> <span class="mi">492</span><span class="p">,</span>
+        <span class="s2">&quot;g&quot;</span><span class="p">:</span> <span class="mi">114</span><span class="p">,</span>
+        <span class="s2">&quot;h&quot;</span><span class="p">:</span> <span class="mi">65412</span><span class="p">,</span>
+        <span class="s2">&quot;i&quot;</span><span class="p">:</span> <span class="mi">65079</span><span class="p">,</span>
+        <span class="s2">&quot;x&quot;</span><span class="p">:</span> <span class="mi">123</span><span class="p">,</span>
+        <span class="s2">&quot;y&quot;</span><span class="p">:</span> <span class="mi">456</span><span class="p">,</span>
+    <span class="p">}</span>
+
+    <span class="n">initial_values</span><span class="p">,</span> <span class="n">unresolved_gates</span> <span class="o">=</span> <span class="n">parse_input</span><span class="p">(</span><span class="n">simple_circuit</span><span class="p">)</span>
+    <span class="n">wire_values</span> <span class="o">=</span> <span class="nb">dict</span><span class="p">(</span><span class="n">initial_values</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">resolve_wire_values</span><span class="p">(</span><span class="n">unresolved_gates</span><span class="p">,</span> <span class="n">wire_values</span><span class="p">)</span> <span class="o">==</span> <span class="n">expected_signals</span>
+
+
+<span class="s2">&quot;&quot;&quot;</span>
 <span class="s2">In little Bobby&#39;s kit&#39;s instructions booklet (provided as your puzzle input),</span>
 <span class="s2">what signal is ultimately provided to **wire `a`**?</span>
 <span class="s2">#DIVIDER</span>
@@ -332,31 +359,6 @@ for these gates.</p>
 <span class="s2">    print(&quot;Part 2:&quot;, part2(puzzle_input))</span>
 
 </pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-3'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-3'>#</a>
-      </div>
-      <h1>After it is run, these are the signals on the wires:</h1>
-<p>expected_signals = {
-    &ldquo;d&rdquo;: 72,
-    &ldquo;e&rdquo;: 507,
-    &ldquo;f&rdquo;: 492,
-    &ldquo;g&rdquo;: 114,
-    &ldquo;h&rdquo;: 65412,
-    &ldquo;i&rdquo;: 65079,
-    &ldquo;x&rdquo;: 123,
-    &ldquo;y&rdquo;: 456,
-}</p>
-<p>initial_values, unresolved_gates = parse_input(simple_circuit)
-wire_values = dict(initial_values)
-assert resolve_wire_values(unresolved_gates, wire_values) == expected_signals</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
