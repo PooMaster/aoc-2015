@@ -19,14 +19,14 @@ def main(exclude):
     all_exclude.extend([".git", ".gitignore", ".github"])
     all_exclude.extend(exclude)
 
-    source_files = find_files(include=["*.py"], exclude=all_exclude)
+    source_files = find_files(Path("."), include=["*.py"], exclude=all_exclude)
 
     pycco.process(
         sources=[str(f) for f in source_files], outdir=str(build_dest), index=True
     )
 
 
-def find_files(path=Path("."), include=[], exclude=[]):
+def find_files(path, include, exclude=()):
     """
     Find all files in a path that match one of the include patterns while not
     matching any of the exclude patterns at any level.
