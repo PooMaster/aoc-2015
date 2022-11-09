@@ -1,3 +1,5 @@
+from typing import Optional
+
 """
 ### Part 1:
 
@@ -25,6 +27,7 @@ The apartment building is very tall, and the basement is very deep; he will
 never find the top or bottom floors.
 """
 
+
 def test_part1():
     """For example:"""
     # > `(())` and `()()` both result in floor `0`.
@@ -46,13 +49,12 @@ def test_part1():
     assert part1(")))") == -3
     assert part1(")())())") == -3
 
+
 """
 To what floor do the instructions take Santa?
 """
 
 # === Part 1 Solution: ===
-
-from typing import Optional
 
 
 def part1(input: str) -> int:
@@ -62,7 +64,7 @@ def part1(input: str) -> int:
     Take a string composed of `(` and `)`, and return the count of `(`'s minus
     the count of `)`'s.
     """
-    return input.count('(') - input.count(')')
+    return input.count("(") - input.count(")")
 
 
 """
@@ -73,6 +75,7 @@ causes him to enter the basement (floor `-1`). The first character in the
 instructions has position `1`, the second character has position `2`, and so on.
 """
 
+
 def test_part2():
     """For example:"""
     # > `)` causes him to enter the basement at character position `1`.
@@ -80,6 +83,7 @@ def test_part2():
 
     # > `()())` causes him to enter the basement at character position `5`.
     assert part2("()())") == 5
+
 
 """
 What is the position of the character that causes Santa to first enter the
@@ -102,19 +106,19 @@ def part2(input: str) -> Optional[int]:
     floor = 0
     for index, char in enumerate(input, start=1):
         match char:
-            case '(':
+            case "(":
                 floor += 1
-            case ')':
+            case ")":
                 floor -= 1
-        
+
         if floor == -1:
             return index
-    
+
     return None
 
 
 if __name__ == "__main__":
-    puzzle_input = open('input.txt').read()
+    puzzle_input = open("input.txt").read()
 
     # Print out part 1 solution
     print("Part 1:", part1(puzzle_input))

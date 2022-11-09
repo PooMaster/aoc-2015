@@ -1,3 +1,5 @@
+from heapq import nsmallest
+
 """
 ### Part 1:
 
@@ -14,6 +16,7 @@ surface area of the box, which is `2*l*w + 2*w*h + 2*h*l`. The elves also need a
 little extra paper for each present: the area of the smallest side.
 """
 
+
 def test_part1():
     """For example:"""
     # > A present with dimensions `2x3x4` requires `2*6 + 2*12 + 2*8 = 52`
@@ -26,6 +29,7 @@ def test_part1():
     # > of `43` square feet.
     assert part1("1x1x10") == 43
 
+
 """
 All numbers in the elves' list are in feet. How many total **square feet of
 wrapping paper** should they order?
@@ -37,27 +41,27 @@ wrapping paper** should they order?
 def parse_dimensions(line: str) -> tuple[int, int, int]:
     """
     First, the input lines have to be parsed into integer dimensions.
-    
+
         >>> parse_dimensions("2x3x4")
         (2, 3, 4)
     """
-    parts = line.split('x')
+    parts = line.split("x")
     assert len(parts) == 3, f"Got dimension line that isn't three numbers: {line}"
 
     l, w, h = map(int, parts)
     return (l, w, h)
 
 
-def paper_area(l: int, w: int, h: int) -> int:
+def paper_area(length: int, width: int, height: int) -> int:
     """Calculate a present's surface area plus extra."""
     # Get the area of each unique side
-    sides = [l*w, w*h, h*l]
+    sides = [length * width, width * height, height * length]
 
     # Save the smallest side as the amount of extra paper needed
     extra = min(sides)
 
     # Add up the doubles of each unique side and include the extra
-    return sum(2*side for side in sides) + extra
+    return sum(2 * side for side in sides) + extra
 
 
 def part1(input: str) -> int:
@@ -82,6 +86,7 @@ to the cubic feet of volume of the present. Don't ask how they tie the bow,
 though; they'll never tell.
 """
 
+
 def test_part2():
     """For example:"""
     # > A present with dimensions `2x3x4` requires `2+2+3+3 = 10` feet of ribbon
@@ -94,24 +99,23 @@ def test_part2():
     # > total of `14` feet.
     assert part2("1x1x10") == 14
 
+
 """
 How many total feet of ribbon should they order?
 """
 
 # === Part 2 Solution: ===
 
-from heapq import nsmallest
 
-
-def ribbon_length(l: int, w: int, h: int) -> int:
+def ribbon_length(length: int, width: int, height: int) -> int:
     """Calculate a present's required ribbon length"""
 
     # Find the two smallest sides for the wrapped ribbon length
-    short_sides = nsmallest(2, [l, w, h])
+    short_sides = nsmallest(2, [length, width, height])
     wrapped_length = sum(side * 2 for side in short_sides)
 
     # The length of ribbon needed for the bow is equal to the present's volume
-    bow_length = l * w * h
+    bow_length = length * width * height
 
     return wrapped_length + bow_length
 
@@ -125,7 +129,7 @@ def part2(input: str) -> int:
 
 
 if __name__ == "__main__":
-    puzzle_input = open('input.txt').read()
+    puzzle_input = open("input.txt").read()
 
     # Print out part 1 solution
     print("Part 1:", part1(puzzle_input))
