@@ -7,11 +7,12 @@ I want to take the opportunity to try out following at least some of this some o
 processes](https://cjolowicz.github.io/posts/hypermodern-python-01-setup/). Also, I'd like to try embedding the problem
 descriptions and development notes in a literate programming style using [Pycco](https://pycco-docs.github.io/pycco/).
 
-To test, make documentation, and run each solution, run each of these steps from inside
-each day's folder.
+See Pycco rendered versions of the solutions on [my GitHub Pages](https://poomaster.github.io/aoc-2015/).
 
-- `poetry run python -m doctest -v *.py`
+To test and run each solution, run each of these steps from inside each day's folder.
+
+- `poetry run flake8 .`
+- `poetry run xdoctest .`
 - `poetry run pytest *.py`
 - `poetry run mypy .`
-- `poetry run pycco *.py`
 - `poetry run python main.py`
