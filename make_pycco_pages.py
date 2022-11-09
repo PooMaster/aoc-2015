@@ -1,11 +1,15 @@
-import pycco
+import argparse
 from pathlib import Path
 from shutil import rmtree
-import argparse
-import logging
+
+import pycco
 
 
 def main(exclude):
+    """
+    Generate Pycco HTML file tree out of a specific subset of sources. The
+    subset is controlled by expliciti include and exclude patterns.
+    """
     build_dest = Path('./pages')
     if build_dest.exists():
         rmtree(build_dest)
@@ -25,6 +29,10 @@ def main(exclude):
 
 
 def find_files(path=Path('.'), include=[], exclude=[]):
+    """
+    Find all files in a path that match one of the include patterns while not
+    matching any of the exclude patterns at any level.
+    """
     for item in path.iterdir():
         # Exclude some files and dirs
         if any(item.match(pattern) for pattern in exclude):
@@ -40,8 +48,6 @@ def find_files(path=Path('.'), include=[], exclude=[]):
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.DEBUG)
-
     parser = argparse.ArgumentParser()
     parser.add_argument("--exclude", help="Comma separated list of file patterns to exclude")
     args = parser.parse_args()
