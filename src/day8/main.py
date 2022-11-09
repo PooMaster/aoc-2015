@@ -21,7 +21,7 @@ import re
 
 def test_part1() -> None:
     """For example:"""
-    
+
     # > `""` is `2` characters of code (the two double quotes), but the string
     # > contains zero characters.
     example1 = '""'
@@ -55,7 +55,7 @@ def test_part1() -> None:
 """
 Santa's list is a file that contains many double-quoted string literals, one on
 each line. The only escape sequences used are `\\` (which represents a single
-backslash), `\"` (which represents a lone double-quote character), and `\x` plus
+backslash), `\"` (which represents a lone double-quote character), and `\\x` plus
 two hexadecimal characters (which represents a single character with that ASCII
 code).
 
