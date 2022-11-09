@@ -378,14 +378,11 @@ characters to <code>16</code>.</p>
 encoded strings</strong> minus <strong>the number of characters of code in each original
 string literal</strong>. For example, for the strings above, the total encoded length
 (<code>6 + 9 + 16 + 11 = 42</code>) minus the characters in the original code
-representation (<code>23</code>, just like in the first part of this puzzle) is `42 - 23 =</p>
+representation (<code>23</code>, just like in the first part of this puzzle) is
+<code>42 - 23 = 19</code>.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="mi">19</span><span class="err">`</span><span class="o">.</span><span class="s2">&quot;&quot;&quot;</span>
-<span class="s2">#DIVIDER</span>
-
-<span class="s2">&quot;&quot;&quot;</span>
-<span class="n">Again</span><span class="p">,</span> <span class="n">regex</span> <span class="n">calls</span> <span class="n">to</span> <span class="n">me</span><span class="o">.</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -406,12 +403,10 @@ representation (<code>23</code>, just like in the first part of this puzzle) is 
       <div class='octowrap'>
         <a class='octothorpe' href='#section-25'>#</a>
       </div>
-      <p>def string_repr(string: str) -&gt; str:
-Return the escaped representation of the given string.</p>
+      <p>Again, regex calls to me.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;|</span><span class="se">\\</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">\1&quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -420,10 +415,10 @@ Return the escaped representation of the given string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-26'>#</a>
       </div>
-      <p>Put a backslash in front of any double quote or backslash characters.</p>
+      <p>Return the escaped representation of the given string.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">string_repr</span><span class="p">(</span><span class="n">string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -432,9 +427,46 @@ Return the escaped representation of the given string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-27'>#</a>
       </div>
+      
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-28'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-28'>#</a>
+      </div>
+      <p>Put a backslash in front of any double quote or backslash characters.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;|</span><span class="se">\\</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">\1&quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-29'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-29'>#</a>
+      </div>
       <p>Split the input lines and then count up the total input string lengths and
 the total number of characters in their escaped string representations.
 Return the difference of the two</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-30'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-30'>#</a>
+      </div>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">total_string_length</span> <span class="o">=</span> <span class="mi">0</span>
@@ -452,41 +484,29 @@ Return the difference of the two</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-31'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
+        <a class='octothorpe' href='#section-31'>#</a>
       </div>
-      
+      <p>Print out part 1 solution</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Part 1:&quot;</span><span class="p">,</span> <span class="n">part1</span><span class="p">(</span><span class="n">puzzle_input</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-29'>
+  <div class='section' id='section-32'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
+        <a class='octothorpe' href='#section-32'>#</a>
       </div>
-      <p>Print out part 1 solution</p>
+      <p>Print out part 2 solution</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Part 2:&quot;</span><span class="p">,</span> <span class="n">part2</span><span class="p">(</span><span class="n">puzzle_input</span><span class="p">))</span>
 
 </pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-30'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-30'>#</a>
-      </div>
-      <p>Print out part 2 solution</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
