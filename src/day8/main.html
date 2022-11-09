@@ -17,28 +17,19 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-0'>#</a>
       </div>
-      
+      <h3>Part 1:</h3>
+<p>&mdash; Day 8: Matchsticks &mdash;</p>
+<p>Space on the sleigh is limited this year, and so Santa will be bringing his list
+as a digital copy. He needs to know how much space it will take up when stored.</p>
+<p>It is common in many programming languages to provide a way to escape special
+characters in strings. For example, C, JavaScript, Perl, Python, and even PHP
+handle special characters in very similar ways.</p>
+<p>However, it is important to realize the difference between the number of
+characters <strong>in the code representation of the string literal</strong> and the number
+of characters <strong>in the in-memory string itself</strong>.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span></span><span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">#DIVIDER</span>
-
-<span class="sd">--- Day 8: Matchsticks ---</span>
-
-<span class="sd">Space on the sleigh is limited this year, and so Santa will be bringing his list</span>
-<span class="sd">as a digital copy. He needs to know how much space it will take up when stored.</span>
-
-<span class="sd">It is common in many programming languages to provide a way to escape special</span>
-<span class="sd">characters in strings. For example, C, JavaScript, Perl, Python, and even PHP</span>
-<span class="sd">handle special characters in very similar ways.</span>
-
-<span class="sd">However, it is important to realize the difference between the number of</span>
-<span class="sd">characters **in the code representation of the string literal** and the number</span>
-<span class="sd">of characters **in the in-memory string itself**.</span>
-<span class="sd">&quot;&quot;&quot;</span>
-
-
-<span class="kn">import</span> <span class="nn">re</span></pre></div>
+      <div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">re</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -47,7 +38,7 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-1'>#</a>
       </div>
-      <h2>Part 1:</h2>
+      <p>For example:</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part1</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
@@ -59,12 +50,10 @@
       <div class='octowrap'>
         <a class='octothorpe' href='#section-2'>#</a>
       </div>
-      <p>For example:</p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">example1</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
-    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -79,9 +68,9 @@ contains zero characters.</p>
 </blockquote>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">example2</span> <span class="o">=</span> <span class="s1">&#39;&quot;abc&quot;&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
-    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">example1</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -96,9 +85,9 @@ data.</p>
 </blockquote>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">example3</span> <span class="o">=</span> <span class="s1">&#39;&quot;aaa</span><span class="se">\\</span><span class="s1">&quot;aaa&quot;&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
-    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">example2</span> <span class="o">=</span> <span class="s1">&#39;&quot;abc&quot;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">5</span>
+    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example2</span><span class="p">)</span> <span class="o">==</span> <span class="mi">3</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -114,30 +103,9 @@ of <code>7</code> characters in the string data.</p>
 </blockquote>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">example4</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="se">\\</span><span class="s1">x27&quot;&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
-    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-    <span class="n">example5</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="se">\\\\</span><span class="s1">&quot;&#39;</span>
-    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
-    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
-
-
-<span class="sa">r</span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Santa&#39;s list is a file that contains many double-quoted string literals, one on</span>
-<span class="sd">each line. The only escape sequences used are `\\` (which represents a single</span>
-<span class="sd">backslash), `\&quot;` (which represents a lone double-quote character), and `\x` plus</span>
-<span class="sd">two hexadecimal characters (which represents a single character with that ASCII</span>
-<span class="sd">code).</span>
-
-<span class="sd">Disregarding the whitespace in the file, what is **the number of characters of</span>
-<span class="sd">code for string literals** minus **the number of characters in memory for the</span>
-<span class="sd">values of the strings** in total for the entire file?</span>
-
-<span class="sd">For example, given the four strings above, the total number of characters of</span>
-<span class="sd">string code (`2 + 5 + 10 + 6 = 23`) minus the total number of characters in</span>
-<span class="sd">memory for string values (`0 + 3 + 7 + 1 = 11`) is `23 - 11 = 12`.</span>
-<span class="sd">&quot;&quot;&quot;</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">example3</span> <span class="o">=</span> <span class="s1">&#39;&quot;aaa</span><span class="se">\\</span><span class="s1">&quot;aaa&quot;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">10</span>
+    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example3</span><span class="p">)</span> <span class="o">==</span> <span class="mi">7</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -152,7 +120,13 @@ one - an apostrophe (<code>'</code>), escaped using hexadecimal notation.</p>
 </blockquote>
     </div>
     <div class='code'>
-      <div class="highlight"><pre></pre></div>
+      <div class="highlight"><pre>    <span class="n">example4</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="se">\\</span><span class="s1">x27&quot;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">6</span>
+    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example4</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span>
+
+    <span class="n">example5</span> <span class="o">=</span> <span class="s1">&#39;&quot;</span><span class="se">\\\\</span><span class="s1">&quot;&#39;</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">example5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+    <span class="k">assert</span> <span class="n">character_count</span><span class="p">(</span><span class="n">example5</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -161,7 +135,17 @@ one - an apostrophe (<code>'</code>), escaped using hexadecimal notation.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-7'>#</a>
       </div>
-      <h3><span id="part-1-solution:" href="part-1-solution:"> Part 1 Solution: </span></h3>
+      <p>Santa&rsquo;s list is a file that contains many double-quoted string literals, one on
+each line. The only escape sequences used are <code>\\</code> (which represents a single
+backslash), <code>\"</code> (which represents a lone double-quote character), and <code>\x</code> plus
+two hexadecimal characters (which represents a single character with that ASCII
+code).</p>
+<p>Disregarding the whitespace in the file, what is <strong>the number of characters of
+code for string literals</strong> minus <strong>the number of characters in memory for the
+values of the strings</strong> in total for the entire file?</p>
+<p>For example, given the four strings above, the total number of characters of
+string code (<code>2 + 5 + 10 + 6 = 23</code>) minus the total number of characters in
+memory for string values (<code>0 + 3 + 7 + 1 = 11</code>) is <code>23 - 11 = 12</code>.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -173,11 +157,10 @@ one - an apostrophe (<code>'</code>), escaped using hexadecimal notation.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-8'>#</a>
       </div>
-      <p>Immediately I want to try using regex to count how many encoding patterns are
-matched in the string.</p>
+      <h3><span id="part-1-solution:" href="part-1-solution:"> Part 1 Solution: </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">character_count</span><span class="p">(</span><span class="n">raw_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -186,7 +169,8 @@ matched in the string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-9'>#</a>
       </div>
-      <p>Return the number of characters encoded in the raw string.</p>
+      <p>Immediately I want to try using regex to count how many encoding patterns are
+matched in the string.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -198,10 +182,10 @@ matched in the string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-10'>#</a>
       </div>
-      
+      <p>Return the number of characters encoded in the raw string.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="n">clipped_string</span> <span class="o">=</span> <span class="n">raw_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></pre></div>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">character_count</span><span class="p">(</span><span class="n">raw_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -210,10 +194,10 @@ matched in the string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-11'>#</a>
       </div>
-      <p>First, remove the beginning and end double quote.</p>
+      
     </div>
     <div class='code'>
-      <div class="highlight"><pre>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">x[0-9a-fA-F]</span><span class="si">{2}</span><span class="s1">|</span><span class="se">\\</span><span class="s1">&quot;|</span><span class="se">\\\\</span><span class="s1">|.&#39;</span><span class="p">,</span> <span class="n">clipped_string</span><span class="p">))</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -222,11 +206,10 @@ matched in the string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-12'>#</a>
       </div>
-      <p>Then match all the encoding patterns possible and return the number of
-matches.</p>
+      <p>First, remove the beginning and end double quote.</p>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre>    <span class="n">clipped_string</span> <span class="o">=</span> <span class="n">raw_string</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -235,8 +218,38 @@ matches.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-13'>#</a>
       </div>
+      <p>Then match all the encoding patterns possible and return the number of
+matches.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\</span><span class="s1">x[0-9a-fA-F]</span><span class="si">{2}</span><span class="s1">|</span><span class="se">\\</span><span class="s1">&quot;|</span><span class="se">\\\\</span><span class="s1">|.&#39;</span><span class="p">,</span> <span class="n">clipped_string</span><span class="p">))</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-14'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-14'>#</a>
+      </div>
       <p>Split the input lines and then count up the total input string lengths and
 encoded character counts. Then return the different between the two</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part1</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-15'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-15'>#</a>
+      </div>
+      <h3>Part 2:</h3>
+<p>&mdash; Part Two &mdash;</p>
+<p>Now, let&rsquo;s go the other way. In addition to finding the number of characters of
+code, you should now <strong>encode each code representation as a new string</strong> and
+find the number of characters of the new encoded representation, including the
+surrounding double quotes.</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">total_string_length</span> <span class="o">=</span> <span class="mi">0</span>
@@ -250,41 +263,12 @@ encoded character counts. Then return the different between the two</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-14'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-14'>#</a>
-      </div>
-      <h3>Part 2:</h3>
-<p>&mdash; Part Two &mdash;</p>
-<p>Now, let&rsquo;s go the other way. In addition to finding the number of characters of
-code, you should now <strong>encode each code representation as a new string</strong> and
-find the number of characters of the new encoded representation, including the
-surrounding double quotes.</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-15'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-15'>#</a>
-      </div>
-      
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-16'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-16'>#</a>
       </div>
-      <p>For example:</p>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
@@ -296,7 +280,33 @@ surrounding double quotes.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-17'>#</a>
       </div>
+      <p>For example:</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">test_part2</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-18'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-18'>#</a>
+      </div>
       
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-19'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-19'>#</a>
+      </div>
+      <blockquote>
+<p><code>""</code> encodes to <code>"\"\""</code>, an increase from <code>2</code> characters to <code>6</code>.</p>
+</blockquote>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">example1</span> <span class="o">=</span> <span class="s1">&#39;&quot;&quot;&#39;</span>
@@ -306,13 +316,13 @@ surrounding double quotes.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-18'>
+  <div class='section' id='section-20'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-18'>#</a>
+        <a class='octothorpe' href='#section-20'>#</a>
       </div>
       <blockquote>
-<p><code>""</code> encodes to <code>"\"\""</code>, an increase from <code>2</code> characters to <code>6</code>.</p>
+<p><code>"abc"</code> encodes to <code>"\"abc\""</code>, an increase from <code>5</code> characters to <code>9</code>.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -323,13 +333,14 @@ surrounding double quotes.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-19'>
+  <div class='section' id='section-21'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-19'>#</a>
+        <a class='octothorpe' href='#section-21'>#</a>
       </div>
       <blockquote>
-<p><code>"abc"</code> encodes to <code>"\"abc\""</code>, an increase from <code>5</code> characters to <code>9</code>.</p>
+<p><code>"aaa\"aaa"</code> encodes to <code>"\"aaa\\\"aaa\""</code>, an increase from <code>10</code>
+characters to <code>16</code>.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -340,14 +351,14 @@ surrounding double quotes.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-20'>
+  <div class='section' id='section-22'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-20'>#</a>
+        <a class='octothorpe' href='#section-22'>#</a>
       </div>
       <blockquote>
-<p><code>"aaa\"aaa"</code> encodes to <code>"\"aaa\\\"aaa\""</code>, an increase from <code>10</code>
-characters to <code>16</code>.</p>
+<p><code>"\x27"</code> encodes to <code>"\"\\x27\""</code>, an increase from <code>6</code> characters to
+<code>11</code>.</p>
 </blockquote>
     </div>
     <div class='code'>
@@ -358,15 +369,16 @@ characters to <code>16</code>.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-21'>
+  <div class='section' id='section-23'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-21'>#</a>
+        <a class='octothorpe' href='#section-23'>#</a>
       </div>
-      <blockquote>
-<p><code>"\x27"</code> encodes to <code>"\"\\x27\""</code>, an increase from <code>6</code> characters to
-<code>11</code>.</p>
-</blockquote>
+      <p>Your task is to find the <strong>total number of characters to represent the newly
+encoded strings</strong> minus <strong>the number of characters of code in each original
+string literal</strong>. For example, for the strings above, the total encoded length
+(<code>6 + 9 + 16 + 11 = 42</code>) minus the characters in the original code
+representation (<code>23</code>, just like in the first part of this puzzle) is `42 - 23 =</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre><span class="mi">19</span><span class="err">`</span><span class="o">.</span><span class="s2">&quot;&quot;&quot;</span>
@@ -377,45 +389,15 @@ characters to <code>16</code>.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-22'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-22'>#</a>
-      </div>
-      <p>Your task is to find the <strong>total number of characters to represent the newly
-encoded strings</strong> minus <strong>the number of characters of code in each original
-string literal</strong>. For example, for the strings above, the total encoded length
-(<code>6 + 9 + 16 + 11 = 42</code>) minus the characters in the original code
-representation (<code>23</code>, just like in the first part of this puzzle) is `42 - 23 =</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-23'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-23'>#</a>
-      </div>
-      <h3><span id="part-2-solution:" href="part-2-solution:"> Part 2 Solution: </span></h3>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre>    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;|</span><span class="se">\\</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">\1&quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
-    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
   <div class='section' id='section-24'>
     <div class='docs'>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-24'>#</a>
       </div>
-      <p>def string_repr(string: str) -&gt; str:
-Return the escaped representation of the given string.</p>
+      <h3><span id="part-2-solution:" href="part-2-solution:"> Part 2 Solution: </span></h3>
     </div>
     <div class='code'>
-      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+      <div class="highlight"><pre></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
@@ -424,7 +406,35 @@ Return the escaped representation of the given string.</p>
       <div class='octowrap'>
         <a class='octothorpe' href='#section-25'>#</a>
       </div>
+      <p>def string_repr(string: str) -&gt; str:
+Return the escaped representation of the given string.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre>    <span class="n">s</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;(&quot;|</span><span class="se">\\</span><span class="s1">)&#39;</span><span class="p">,</span> <span class="sa">r</span><span class="s2">&quot;</span><span class="se">\\</span><span class="s2">\1&quot;</span><span class="p">,</span> <span class="n">string</span><span class="p">)</span>
+    <span class="k">return</span> <span class="s1">&#39;&quot;&#39;</span> <span class="o">+</span> <span class="n">s</span> <span class="o">+</span> <span class="s1">&#39;&quot;&#39;</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-26'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-26'>#</a>
+      </div>
       <p>Put a backslash in front of any double quote or backslash characters.</p>
+    </div>
+    <div class='code'>
+      <div class="highlight"><pre><span class="k">def</span> <span class="nf">part2</span><span class="p">(</span><span class="nb">input</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span></pre></div>
+    </div>
+  </div>
+  <div class='clearall'></div>
+  <div class='section' id='section-27'>
+    <div class='docs'>
+      <div class='octowrap'>
+        <a class='octothorpe' href='#section-27'>#</a>
+      </div>
+      <p>Split the input lines and then count up the total input string lengths and
+the total number of characters in their escaped string representations.
+Return the difference of the two</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="n">total_string_length</span> <span class="o">=</span> <span class="mi">0</span>
@@ -442,26 +452,24 @@ Return the escaped representation of the given string.</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-26'>
+  <div class='section' id='section-28'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-26'>#</a>
+        <a class='octothorpe' href='#section-28'>#</a>
       </div>
-      <p>Split the input lines and then count up the total input string lengths and
-the total number of characters in their escaped string representations.
-Return the difference of the two</p>
+      
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Part 1:&quot;</span><span class="p">,</span> <span class="n">part1</span><span class="p">(</span><span class="n">puzzle_input</span><span class="p">))</span></pre></div>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-27'>
+  <div class='section' id='section-29'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-27'>#</a>
+        <a class='octothorpe' href='#section-29'>#</a>
       </div>
-      
+      <p>Print out part 1 solution</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre>    <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Part 2:&quot;</span><span class="p">,</span> <span class="n">part2</span><span class="p">(</span><span class="n">puzzle_input</span><span class="p">))</span>
@@ -470,22 +478,10 @@ Return the difference of the two</p>
     </div>
   </div>
   <div class='clearall'></div>
-  <div class='section' id='section-28'>
+  <div class='section' id='section-30'>
     <div class='docs'>
       <div class='octowrap'>
-        <a class='octothorpe' href='#section-28'>#</a>
-      </div>
-      <p>Print out part 1 solution</p>
-    </div>
-    <div class='code'>
-      <div class="highlight"><pre></pre></div>
-    </div>
-  </div>
-  <div class='clearall'></div>
-  <div class='section' id='section-29'>
-    <div class='docs'>
-      <div class='octowrap'>
-        <a class='octothorpe' href='#section-29'>#</a>
+        <a class='octothorpe' href='#section-30'>#</a>
       </div>
       <p>Print out part 2 solution</p>
     </div>
