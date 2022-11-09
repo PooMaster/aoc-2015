@@ -351,7 +351,9 @@ for these gates.</p>
     &ldquo;x&rdquo;: 123,
     &ldquo;y&rdquo;: 456,
 }</p>
-<p>assert resolve_wire_values(simple_circuit) == expected_signals</p>
+<p>initial_values, unresolved_gates = parse_input(simple_circuit)
+wire_values = dict(initial_values)
+assert resolve_wire_values(unresolved_gates, wire_values) == expected_signals</p>
     </div>
     <div class='code'>
       <div class="highlight"><pre></pre></div>
