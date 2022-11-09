@@ -12,5 +12,6 @@ each day's folder.
 
 - `poetry run python -m doctest -v *.py`
 - `poetry run pytest *.py`
+- `poetry run mypy .`
 - `poetry run pycco *.py`
 - `poetry run python main.py`
