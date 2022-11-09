@@ -28,7 +28,7 @@ never find the top or bottom floors.
 """
 
 
-def test_part1():
+def test_part1() -> None:
     """For example:"""
     # > `(())` and `()()` both result in floor `0`.
     assert part1("(())") == 0
@@ -76,7 +76,7 @@ instructions has position `1`, the second character has position `2`, and so on.
 """
 
 
-def test_part2():
+def test_part2() -> None:
     """For example:"""
     # > `)` causes him to enter the basement at character position `1`.
     assert part2(")") == 1

@@ -1,11 +1,12 @@
 import argparse
 from pathlib import Path
 from shutil import rmtree
+from typing import Generator, Sequence
 
 import pycco
 
 
-def main(exclude):
+def main(exclude: Sequence[str]) -> None:
     """
     Generate Pycco HTML file tree out of a specific subset of sources. The
     subset is controlled by expliciti include and exclude patterns.
@@ -26,7 +27,9 @@ def main(exclude):
     )
 
 
-def find_files(path, include, exclude=()):
+def find_files(
+    path: Path, include: Sequence[str], exclude: Sequence[str] = ()
+) -> Generator[Path, None, None]:
     """
     Find all files in a path that match one of the include patterns while not
     matching any of the exclude patterns at any level.

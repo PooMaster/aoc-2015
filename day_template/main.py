@@ -5,7 +5,7 @@
 """
 
 
-def test_part1():
+def test_part1() -> None:
     """For example:"""
     # > `""` results in  `...`.
     assert part1("") == ...
@@ -30,7 +30,7 @@ def part1(input: str) -> ...:
 """
 
 
-def test_part2():
+def test_part2() -> None:
     """For example:"""
     # > `""` results in  `...`.
     assert part2("") == ...

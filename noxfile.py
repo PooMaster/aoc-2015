@@ -1,3 +1,4 @@
+# flake8: noqa
 import os
 import tempfile
 
@@ -6,7 +7,7 @@ import nox
 
 nox.options.sessions = "lint", "mypy"
 
-locations = "noxfile.py", "make_pycco_pages.py", "day1", "day2"
+locations = "make_pycco_pages.py", "src"
 
 
 @nox.session(python=["3.10"])
@@ -15,6 +16,7 @@ def lint(session):
     install_with_constraints(
         session,
         "flake8",
+        "flake8-annotations",
         "flake8-bandit",
         "flake8-black",
         "flake8-bugbear",
