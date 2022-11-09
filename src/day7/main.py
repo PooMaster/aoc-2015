@@ -68,7 +68,9 @@ def test_part1() -> None:
         "y": 456,
     }
 
-    assert resolve_wire_values(simple_circuit) == expected_signals
+    initial_values, unresolved_gates = parse_input(simple_circuit)
+    wire_values = dict(initial_values)
+    assert resolve_wire_values(unresolved_gates, wire_values) == expected_signals
 
 
 """
