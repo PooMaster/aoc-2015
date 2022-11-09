@@ -1,4 +1,5 @@
 import os
+from pathlib import Path
 import tempfile
 from typing import Any
 
@@ -6,9 +7,10 @@ import nox
 from nox.sessions import Session
 
 
-nox.options.sessions = "lint", "mypy"
+nox.options.sessions = "lint", "mypy", "xdoctest"
 
 locations = "noxfile.py", "make_pycco_pages.py", "src"
+packages = Path("src").glob("day*")
 
 
 @nox.session(python=["3.10"])
@@ -34,6 +36,16 @@ def mypy(session: Session) -> None:
         "mypy",
     )
     session.run("mypy", *args)
+
+
+@nox.session(python=["3.10"])
+def xdoctest(session: Session) -> None:
+    """Run examples with xdoctest."""
+    args = session.posargs or ["all"]
+    # session.run("poetry", "install", "--only", "main", external=True)
+    install_with_constraints(session, "xdoctest")
+    for package in packages:
+        session.run("python", "-m", "xdoctest", str(package), *args)
 
 
 def install_with_constraints(
