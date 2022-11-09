@@ -19,6 +19,7 @@ flake8 = "^5.0.4"
 flake8-black = "^0.3.3"
 flake8-import-order = "^0.18.1"
 nox = "^2022.8.7"
+pre-commit = "^2.20.0"
 
 [build-system]
 requires = ["poetry-core"]
