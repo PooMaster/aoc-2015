@@ -53,7 +53,7 @@ def test_part1() -> None:
         x LSHIFT 2 -> f
         y RSHIFT 2 -> g
         NOT x -> h
-        NOT y -> i"""
+        NOT y -> i"""  # pycco plz
 
     # After it is run, these are the signals on the wires:
     expected_signals = {
