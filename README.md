@@ -16,3 +16,13 @@ To test and run each solution, run each of these steps from inside each day's fo
 - `poetry run pytest *.py`
 - `poetry run mypy .`
 - `poetry run python main.py`
+
+Project-wide checks can be run using `nox`:
+
+- `nox -rs lint`
+- `nox -rs mypy`
+- `nox -rs xdoctest`
+
+Or for all check types:
+
+- `nox`
