@@ -10,25 +10,23 @@ def main(exclude):
     Generate Pycco HTML file tree out of a specific subset of sources. The
     subset is controlled by expliciti include and exclude patterns.
     """
-    build_dest = Path('./pages')
+    build_dest = Path("./pages")
     if build_dest.exists():
         rmtree(build_dest)
     build_dest.mkdir()
 
-    all_exclude = Path('.gitignore').read_text().splitlines()
-    all_exclude.extend(['.git', '.gitignore', '.github'])
+    all_exclude = Path(".gitignore").read_text().splitlines()
+    all_exclude.extend([".git", ".gitignore", ".github"])
     all_exclude.extend(exclude)
 
     source_files = find_files(include=["*.py"], exclude=all_exclude)
 
     pycco.process(
-        sources=[str(f) for f in source_files],
-        outdir=str(build_dest),
-        index=True
+        sources=[str(f) for f in source_files], outdir=str(build_dest), index=True
     )
 
 
-def find_files(path=Path('.'), include=[], exclude=[]):
+def find_files(path=Path("."), include=[], exclude=[]):
     """
     Find all files in a path that match one of the include patterns while not
     matching any of the exclude patterns at any level.
@@ -49,8 +47,10 @@ def find_files(path=Path('.'), include=[], exclude=[]):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--exclude", help="Comma separated list of file patterns to exclude")
+    parser.add_argument(
+        "--exclude", help="Comma separated list of file patterns to exclude"
+    )
     args = parser.parse_args()
 
-    exclude = args.exclude.split(',') if args.exclude else []
+    exclude = args.exclude.split(",") if args.exclude else []
     main(exclude)
