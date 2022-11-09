@@ -38,11 +38,8 @@ def parse_dimensions(line: str) -> tuple[int, int, int]:
     """
     First, the input lines have to be parsed into integer dimensions.
     
-    ```
-    >>> parse_dimensions("2x3x4")
-    (2, 3, 4)
-
-    ```
+        >>> parse_dimensions("2x3x4")
+        (2, 3, 4)
     """
     parts = line.split('x')
     assert len(parts) == 3, f"Got dimension line that isn't three numbers: {line}"
